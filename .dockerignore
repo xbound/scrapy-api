@@ -1,0 +1,7 @@
+/.git
+/.dockerignore
+/.vscode
+/.python-version
+/.env
+/.venv
+/scrapy_api.egg-info

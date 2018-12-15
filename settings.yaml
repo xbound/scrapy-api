@@ -1,0 +1,9 @@
+default:
+  DEBUG: false
+  MONGODB_DB: "scrapy_db"
+  MONGODB_HOST: "mongodb"
+  MONGODB_PORT: 27017
+  CELERY_BROKER_URL: "redis://redis:6379/0"
+  CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+development:
+  DEBUG: true

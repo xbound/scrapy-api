@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+name = "pypi"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+yapf = "*"
+rope = "*"
+
+[requires]
+python_version = "3.6"
+
+[packages]
+dynaconf = {version = "*",extras = ["yaml"]}
+requests-html = "*"
+scrapy-api = {editable = true,path = "."}
+celery = {version = "*",extras = ["redis"]}
+gunicorn = "*"
+flask-restplus = "*"
+flask-mongoengine = "*"
+marshmallow-mongoengine = "*"
+marshmallow = "*"
+blinker = "*"
