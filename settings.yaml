@@ -7,3 +7,6 @@ default:
   CELERY_RESULT_BACKEND: "redis://redis:6379/0"
 development:
   DEBUG: true
+testing:
+  DEBUG: true
+  

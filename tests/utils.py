@@ -3,9 +3,6 @@ import json
 CONTENT_TYPE = 'application/json'
 
 
-def get_json(client, url, json_dict):
-    return client.get(url, data=json_dict)
-
 def post_json(client, url, json_dict):
     return client.post(
         url, data=json.dumps(json_dict), content_type=CONTENT_TYPE)
@@ -16,3 +13,5 @@ def put_json(client, url, json_dict):
         url, data=json.dumps(json_dict), content_type=CONTENT_TYPE)
 
 
+def json_response(response):
+    return json.loads(response.data.decode('utf8'))

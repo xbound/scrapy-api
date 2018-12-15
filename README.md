@@ -1,9 +1,17 @@
-## REST API for fetching text and images from webpage.
+## Scrapy API
 
-### Setup
+REST API for fetching text and images from webpage using asynchronous Celery tasks and storing results in MongoDB.
 
+![architecture.png](architecture.png)
+
+
+Command to run project:
 ```
 $ docker-compose up --build
+```
+TO run tests:
+```
+docker-compose exec app py.test
 ```
 
 After laucnch API will be available at http://localhost:8000/api/.

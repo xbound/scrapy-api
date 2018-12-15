@@ -6,7 +6,6 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 RUN pip install -r requirements.txt
+RUN pip install pytest
 
 EXPOSE 8000
-
-CMD ["./run.sh"]

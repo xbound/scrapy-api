@@ -21,6 +21,7 @@ services:
   app:
     build: .
     container_name: "app"
+    command: ./run.sh
     volumes:
       - .:/usr/src/app
     ports:
@@ -32,8 +33,6 @@ services:
       - mongodb
     networks: 
       - scrapy_network
-    stdin_open: true
-    tty: true
   celery:
     build: .
     container_name: "celery"
