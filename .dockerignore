@@ -1,7 +1,20 @@
-/.git
-/.dockerignore
-/.vscode
-/.python-version
-/.env
-/.venv
-/scrapy_api.egg-info
+.vscode/
+.python-version
+.env
+.venv/
+.git/
+
+build/
+dist/
+*.egg-info/
+*.egg/
+*.pyc
+*.swp
+
+.tox
+.coverage
+html/*
+__pycache__
+
+# Compiled Documentation
+docs/_build/

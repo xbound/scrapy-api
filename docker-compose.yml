@@ -33,6 +33,8 @@ services:
       - mongodb
     networks: 
       - scrapy_network
+    stdin_open: true
+    tty: true
   celery:
     build: .
     container_name: "celery"

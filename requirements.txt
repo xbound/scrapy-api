@@ -1,5 +1,4 @@
 -i https://pypi.org/simple
--e .
 amqp==2.3.2
 aniso8601==4.0.1
 appdirs==1.4.3
@@ -27,7 +26,7 @@ kombu==4.2.2
 lxml==4.2.5
 markupsafe==1.1.0
 marshmallow-mongoengine==0.9.1
-marshmallow==2.16.3
+marshmallow==2.17.0
 mongoengine==0.16.3
 parse==1.9.0
 pyee==5.0.0

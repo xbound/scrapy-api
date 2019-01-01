@@ -1,6 +1,7 @@
 from celery import Celery
 from dynaconf import FlaskDynaconf
 from flask import Flask
+from werkzeug.debug import DebuggedApplication
 
 from scrapy_api import api, extensions
 
@@ -10,6 +11,8 @@ def configure_app(app):
     Configure app settings.
     '''
     FlaskDynaconf(app)
+    if app.debug:
+        app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
 
 def init_celery(app=None):

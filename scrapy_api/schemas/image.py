@@ -4,7 +4,6 @@ Schemas for image related models.
 from marshmallow_mongoengine import ModelSchema
 from scrapy_api.models import ImageTask, Image
 
-
 class ImageSchema(ModelSchema):
     '''
     Embedded image schema for Image model.

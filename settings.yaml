@@ -1,12 +1,22 @@
-default:
+development:
+  DEBUG: true
+  MONGODB_DB: "scrapy_db"
+  MONGODB_HOST: "localhost"
+  MONGODB_PORT: 27017
+  CELERY_BROKER_URL: "redis://localhost:6379/0"
+  CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
+staging:
+  DEBUG: true
+  MONGODB_DB: "scrapy_db"
+  MONGODB_HOST: "mongodb"
+  MONGODB_PORT: 27017
+  CELERY_BROKER_URL: "redis://redis:6379/0"
+  CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+production:
   DEBUG: false
   MONGODB_DB: "scrapy_db"
   MONGODB_HOST: "mongodb"
   MONGODB_PORT: 27017
   CELERY_BROKER_URL: "redis://redis:6379/0"
   CELERY_RESULT_BACKEND: "redis://redis:6379/0"
-development:
-  DEBUG: true
-testing:
-  DEBUG: true
   

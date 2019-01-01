@@ -8,6 +8,7 @@ pylint = "*"
 yapf = "*"
 rope = "*"
 pytest = "*"
+pdbpp = "*"
 
 [requires]
 python_version = "3.6"
@@ -15,7 +16,6 @@ python_version = "3.6"
 [packages]
 dynaconf = {version = "*",extras = ["yaml"]}
 requests-html = "*"
-scrapy-api = {editable = true,path = "."}
 celery = {version = "*",extras = ["redis"]}
 gunicorn = "*"
 flask-restplus = "*"
