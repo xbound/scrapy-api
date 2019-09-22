@@ -4,8 +4,7 @@ from flask_restplus import Namespace, Resource, reqparse
 from celery.result import AsyncResult
 
 from scrapy_api.models import ImageTask, Image
-from scrapy_api.schemas.image import (ImagePOSTOutput, ImagePUTInput,
-                                      ImagePUTOutput)
+from scrapy_api import errors
 
 __all__ = ['image_namespace']
 
@@ -21,12 +20,17 @@ get_arguments = reqparse.RequestParser()
 get_arguments.add_argument('task_id', type=str, help='Task id.')
 get_arguments.add_argument('img_id', type=int, help='Image id.')
 
+
+@image_namespace.errorhandler(ImageTask.DoesNotExist)
+def image_task_does_not_exist(error):
+    return errors.make_error_response(errors.TaskDoesNotExist())
+
+
 @image_namespace.route('/')
 class ImageAPI(Resource):
     '''
     Images endpoint
     '''
-
     def get_image(self, task_id, id):
         task = ImageTask.objects(task_id=task_id, images__id=id).first()
         image = next((img for img in task.images if img.id == id), None)
@@ -66,8 +70,8 @@ class ImageAPI(Resource):
         image = self.get_image(task_id, img_id)
         if not image:
             abort(404)
-        return send_file(
-            io.BytesIO(image.img),
-            mimetype='image/jpeg',
-            as_attachment=True,
-            attachment_filename='{}-{}-{}.jpg'.format('Image', task_id, id))
+        return send_file(io.BytesIO(image.img),
+                         mimetype='image/jpeg',
+                         as_attachment=True,
+                         attachment_filename='{}-{}-{}.jpg'.format(
+                             'Image', task_id, id))

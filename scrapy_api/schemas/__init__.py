@@ -1,3 +1,0 @@
-'''
-Schemas for database models.
-'''

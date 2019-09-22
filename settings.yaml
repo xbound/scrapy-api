@@ -1,3 +1,7 @@
+default:
+  app_version: 1.0-dev
+  app_name: Scrapy API
+  app_descr: 'REST API for parsing data information from websites.'
 development:
   DEBUG: true
   MONGODB_DB: "scrapy_db"
@@ -5,7 +9,7 @@ development:
   MONGODB_PORT: 27017
   CELERY_BROKER_URL: "redis://localhost:6379/0"
   CELERY_RESULT_BACKEND: "redis://localhost:6379/0"
-staging:
+testing:
   DEBUG: true
   MONGODB_DB: "scrapy_db"
   MONGODB_HOST: "mongodb"

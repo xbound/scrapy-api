@@ -20,6 +20,4 @@ celery = {version = "*",extras = ["redis"]}
 gunicorn = "*"
 flask-restplus = "*"
 flask-mongoengine = "*"
-marshmallow-mongoengine = "*"
-marshmallow = "*"
 blinker = "*"
