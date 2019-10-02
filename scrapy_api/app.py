@@ -1,11 +1,15 @@
 from celery import Celery
 from dynaconf import FlaskDynaconf
 from flask import Flask, Blueprint
-from flask_restplus import Api
+from flask_restplus import Api, Resource
 from werkzeug.debug import DebuggedApplication
 
-from scrapy_api import api, extensions
+from scrapy_api import extensions
 from scrapy_api import errors
+
+from scrapy_api.api.ping import ping_namespace
+from scrapy_api.api.image import image_namespace
+from scrapy_api.api.document import document_namespace
 
 
 def configure_app(app):
@@ -13,8 +17,6 @@ def configure_app(app):
     Configure app settings.
     '''
     FlaskDynaconf(app)
-    if app.debug:
-        app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
 
 def init_celery(app=None):
@@ -35,7 +37,7 @@ def init_celery(app=None):
 
     extensions.celery.Task = ContextTask
     extensions.celery.conf.imports = extensions.celery.conf.imports + (
-        'scrapy_api.commons.tasks', )
+        'scrapy_api.tasks', )
     extensions.celery.conf.task_serializer = 'json'
     extensions.celery.conf.result_serializer = 'pickle'
     extensions.celery.conf.accept_content = ['json', 'pickle']
@@ -81,7 +83,7 @@ def create_app():
     ''' 
     Create new Flask app instance.
     '''
-    app = Flask('scrapy_api')
+    app = Flask(__name__)
     configure_app(app)
     init_extensions(app)
     register_blueprints(app)

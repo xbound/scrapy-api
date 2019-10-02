@@ -11,5 +11,4 @@ class PingAPI(Resource):
     '''
 
     def get(self):
-        # Simulating error
         return {'message': 'OK'}

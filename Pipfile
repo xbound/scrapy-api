@@ -10,14 +10,21 @@ rope = "*"
 pytest = "*"
 pdbpp = "*"
 
+[scripts]
+celery = "celery -A scrapy_api.celery.app worker --loglevel=debug"
+routes = "flask routes"
+dev = "flask run"
+gunicorn = "gunicorn -c gunicorn.py scrapy_api.wsgi:app"
+clean = "find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
+
 [requires]
 python_version = "3.6"
 
 [packages]
-dynaconf = {version = "*",extras = ["yaml"]}
+dynaconf = {extras = ["yaml"],version = "*"}
 requests-html = "*"
-celery = {version = "*",extras = ["redis"]}
+celery = {extras = ["redis"],version = "*"}
 gunicorn = "*"
-flask-restplus = "*"
 flask-mongoengine = "*"
 blinker = "*"
+flask-restplus = "*"

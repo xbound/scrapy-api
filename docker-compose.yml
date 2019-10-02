@@ -21,7 +21,7 @@ services:
   app:
     build: .
     container_name: "app"
-    command: ./run.sh
+    command: gunicorn -c gunicorn.py scrapy_api.wsgi:app
     volumes:
       - .:/usr/src/app
     ports:

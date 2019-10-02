@@ -19,6 +19,10 @@ class Task(Document):
 
     @classmethod
     def pre_save(cls, sender, task, **kwargs):
+        '''
+        Hook function which is executes celery task
+        before model object is saved.
+        '''
         if not task.task_id:
             celery_task = cls.task_function.apply_async((task.url, ))
             task.task_id = celery_task.id
