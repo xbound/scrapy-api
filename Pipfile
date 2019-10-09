@@ -27,4 +27,4 @@ celery = {extras = ["redis"],version = "*"}
 gunicorn = "*"
 flask-mongoengine = "*"
 blinker = "*"
-flask-restplus = "*"
+flask-restplus = "==0.12.1"

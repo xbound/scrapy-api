@@ -8,7 +8,7 @@ from scrapy_api import errors
 
 __all__ = ['image_namespace']
 
-image_namespace = Namespace('/image/', description='Images endpoint')
+image_namespace = Namespace('images', description='Images endpoint')
 
 put_arguments = reqparse.RequestParser()
 put_arguments.add_argument('url', type=str, help='URL of web page.')

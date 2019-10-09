@@ -72,9 +72,9 @@ def register_blueprints(app):
         return errors.make_error_response(error)
 
     # Adding namespaces
-    api.add_namespace(ping_namespace, '/ping')
-    api.add_namespace(document_namespace, '/document')
-    api.add_namespace(image_namespace, '/image')
+    api.add_namespace(ping_namespace)
+    api.add_namespace(document_namespace)
+    api.add_namespace(image_namespace)
 
     app.register_blueprint(blueprint)
 

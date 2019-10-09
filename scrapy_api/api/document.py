@@ -6,7 +6,7 @@ from scrapy_api import errors
 
 __all__ = ['document_namespace']
 
-document_namespace = Namespace('/document/', description='Documents endpoint')
+document_namespace = Namespace('document', description='Documents endpoint')
 
 put_arguments = reqparse.RequestParser()
 put_arguments.add_argument('url', type=str, help='URL of web page.')
