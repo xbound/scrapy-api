@@ -2,6 +2,7 @@
 Module where all application exceptions are declared. Here you need to write code intended for use inside error handlers.
 '''
 from typing import Union
+from flask_restplus import Model, fields
 
 
 class APIError(Exception):
@@ -50,3 +51,9 @@ def make_error_response(error: ErrorType):
         'message': error.message,
         'code': error.code,
     }, error.http_code
+
+
+error_response: Model = Model('Error response', {
+    'message': fields.String,
+    'code': fields.String,
+})

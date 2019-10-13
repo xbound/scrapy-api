@@ -16,15 +16,18 @@ routes = "flask routes"
 dev = "flask run"
 gunicorn = "gunicorn -c gunicorn.py scrapy_api.wsgi:app"
 clean = "find . -type f -name \"*.py[co]\" -delete -or -type d -name \"__pycache__\" -delete"
+docker-up = "docker-compose up"
+docker-build = "docker-compose up --build"
 
 [requires]
 python_version = "3.6"
 
 [packages]
-dynaconf = {extras = ["yaml"],version = "*"}
+dynaconf = {version = "*",extras = ["yaml"]}
 requests-html = "*"
-celery = {extras = ["redis"],version = "*"}
+celery = {version = "*",extras = ["redis"]}
 gunicorn = "*"
 flask-mongoengine = "*"
 blinker = "*"
 flask-restplus = "==0.12.1"
+marshmallow = "*"

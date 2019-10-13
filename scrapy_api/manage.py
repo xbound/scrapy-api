@@ -1,3 +1,9 @@
+'''
+Flask CLI managment scripts. Here you need to write code for Flask scripts.
+
+$ flask <your command here>
+'''
+
 import click
 from flask.cli import FlaskGroup
 

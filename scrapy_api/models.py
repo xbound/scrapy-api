@@ -1,5 +1,5 @@
 '''
-Database models
+Database models. In this module all ORM related stuff are declared.
 '''
 from celery.result import AsyncResult
 from flask_mongoengine import Document
@@ -10,11 +10,15 @@ from scrapy_api.tasks import get_images, get_text
 
 
 class Task(Document):
+    '''
+    Task base model.
+    '''
     meta = {'abstract': True}
-    url = StringField(max_length=100)
+    url = StringField(max_length=100, required=True)
     task_id = StringField(max_length=50)
     task_status = StringField(max_length=10)
 
+    # needs to be overwritten in child's class
     task_function = None
 
     @classmethod
@@ -39,6 +43,9 @@ class Task(Document):
 
 
 class DocumentTask(Task):
+    '''
+    Document model class.
+    '''
     text = StringField()
     status_code = IntField()
 
@@ -49,11 +56,17 @@ signals.pre_save.connect(DocumentTask.pre_save, sender=DocumentTask)
 
 
 class Image(EmbeddedDocument):
+    '''
+    Image model class.
+    '''
     id = IntField()
     img = BinaryField()
 
 
 class ImageTask(Task):
+    '''
+    Image task model class.
+    '''
     images = ListField(EmbeddedDocumentField(Image))
 
     task_function = get_images
