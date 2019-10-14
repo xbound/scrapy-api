@@ -58,10 +58,7 @@ def register_blueprints(app: Flask):
     Register blueprints for app.
     '''
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-    # api = Api(blueprint,
-    #           title=app.config.app_name,
-    #           version=app.config.app_version,
-    #           description=app.config.app_descr)
+
     extensions.api.init_app(blueprint)
     extensions.api.title = app.config.app_name
     extensions.api.version = app.config.app_version
@@ -83,6 +80,9 @@ def register_blueprints(app: Flask):
     app.register_blueprint(blueprint)
 
 def init_cli(app: Flask):
+    '''
+    Register flask cli commands.
+    '''
     app.cli.add_command(manage.postman_api)
 
 

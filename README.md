@@ -27,4 +27,4 @@ You can also only run local development server (only server without celery):
 $ pipenv run dev
 ```
 
-After laucnch API will be available at http://localhost:8000/api/.
+After laucnch API will be available at http://localhost:5000/api/.
