@@ -17,7 +17,7 @@ services:
   app:
     build: .
     container_name: "app"
-    command: gunicorn -c gunicorn.py scrapy_api.wsgi:app
+    command: pipenv run gunicorn
     volumes:
       - .:/usr/src/app
     ports:
@@ -32,7 +32,7 @@ services:
   celery:
     build: .
     container_name: "celery"
-    command: celery -A scrapy_api.celery.app worker --loglevel=debug
+    command: pipenv run celery
     volumes:
       - .:/usr/src/app
     depends_on:

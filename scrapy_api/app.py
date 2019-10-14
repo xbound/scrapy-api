@@ -12,14 +12,14 @@ from scrapy_api.api.image import image_namespace
 from scrapy_api.api.document import document_namespace
 
 
-def configure_app(app):
+def configure_app(app: Flask):
     '''
     Configure app settings.
     '''
     FlaskDynaconf(app)
 
 
-def init_celery(app=None):
+def init_celery(app: Flask = None):
     '''
     Initialize Celery instance
     '''
@@ -45,14 +45,14 @@ def init_celery(app=None):
     return extensions.celery
 
 
-def init_extensions(app):
+def init_extensions(app: Flask):
     '''
     Initialize Flask extensions.
     '''
     extensions.mongo.init_app(app)
 
 
-def register_blueprints(app):
+def register_blueprints(app: Flask):
     '''
     Register blueprints for app.
     '''
