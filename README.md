@@ -28,3 +28,6 @@ $ pipenv run dev
 ```
 
 After laucnch API will be available at http://localhost:5000/api/.
+
+> **Notice**:  
+If you want to debug app during initialization (for example debug inside `create_app`) use `pipenv run debug` command to run project. This will ensure that reloader would not call `create_app` second time thus breaking `pdb` session.
