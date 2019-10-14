@@ -5,13 +5,15 @@ $ flask <your command here>
 '''
 
 import click
-from flask.cli import FlaskGroup
+from flask.cli import FlaskGroup, with_appcontext
+from flask import current_app
 
-from scrapy_api.app import create_app
-
-@click.group(cls=FlaskGroup, create_app=create_app)
-def cli():
+@click.command('postman')
+@with_appcontext
+def postman_api():
     '''
-    Main entry point.
+    Generate Swagger api exportable to Postman.
     '''
+    import pdb; pdb.set_trace()
+    print('Test')
 

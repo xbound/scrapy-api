@@ -6,6 +6,7 @@ from werkzeug.debug import DebuggedApplication
 
 from scrapy_api import extensions
 from scrapy_api import errors
+from scrapy_api import manage
 
 from scrapy_api.api.ping import ping_namespace
 from scrapy_api.api.image import image_namespace
@@ -57,26 +58,32 @@ def register_blueprints(app: Flask):
     Register blueprints for app.
     '''
     blueprint = Blueprint('api', __name__, url_prefix='/api')
-    api = Api(blueprint,
-              title=app.config.app_name,
-              version=app.config.app_version,
-              description=app.config.app_descr)
-
+    # api = Api(blueprint,
+    #           title=app.config.app_name,
+    #           version=app.config.app_version,
+    #           description=app.config.app_descr)
+    extensions.api.init_app(blueprint)
+    extensions.api.title = app.config.app_name
+    extensions.api.version = app.config.app_version
+    extensions.api.description = app.config.app_descr
     # Error handlers
     @blueprint.app_errorhandler(404)
     def path_not_found(error):
         return errors.make_error_response(errors.Error404())
 
-    @api.errorhandler
+    @extensions.api.errorhandler
     def default_error_handler(error):
         return errors.make_error_response(error)
 
     # Adding namespaces
-    api.add_namespace(ping_namespace)
-    api.add_namespace(document_namespace)
-    api.add_namespace(image_namespace)
+    extensions.api.add_namespace(ping_namespace)
+    extensions.api.add_namespace(document_namespace)
+    extensions.api.add_namespace(image_namespace)
 
     app.register_blueprint(blueprint)
+
+def init_cli(app: Flask):
+    app.cli.add_command(manage.postman_api)
 
 
 def create_app():
@@ -88,4 +95,5 @@ def create_app():
     init_extensions(app)
     register_blueprints(app)
     init_celery(app)
+    init_cli(app)
     return app
