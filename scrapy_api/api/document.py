@@ -13,7 +13,7 @@ put_input = document_namespace.model(
         'url': fields.Url(description='URL of website', required=True),
     })
 
-put_output = document_namespace.model(
+task_output = document_namespace.model(
     'Document task PUT response', {
         'task_id':
         fields.String(description='Task unique identifier.',
@@ -29,7 +29,7 @@ post_input = document_namespace.model(
     })
 
 get_output = document_namespace.inherit(
-    'Document task GET response', put_output, {
+    'Document task GET response', task_output, {
         'text': fields.String(description='Extracted text'),
         'status_code': fields.Integer(description='Fetch HTTP code result'),
     })
@@ -52,7 +52,7 @@ class DocumentAPI(Resource):
     '''
     @document_namespace.expect(put_input, validate=True)
     @document_namespace.response(400, 'Bad request')
-    @document_namespace.marshal_with(put_output,
+    @document_namespace.marshal_with(task_output,
                                      code=201,
                                      description='New task submitted')
     def put(self):
@@ -65,7 +65,7 @@ class DocumentAPI(Resource):
         return document, 201
 
     @document_namespace.expect(post_input, validate=True)
-    @document_namespace.marshal_with(put_output,
+    @document_namespace.marshal_with(task_output,
                                      code=200,
                                      description='Task status')
     @document_namespace.marshal_with(task_not_found,

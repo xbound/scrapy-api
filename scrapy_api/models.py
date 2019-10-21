@@ -59,7 +59,7 @@ class Image(EmbeddedDocument):
     '''
     Image model class.
     '''
-    id = IntField()
+    img_id = IntField()
     img = BinaryField()
 
 

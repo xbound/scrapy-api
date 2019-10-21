@@ -1,6 +1,6 @@
 import io
 from flask import request, abort, send_file
-from flask_restplus import Namespace, Resource, reqparse
+from flask_restplus import Namespace, Resource, fields
 from celery.result import AsyncResult
 
 from scrapy_api.models import ImageTask, Image
@@ -10,15 +10,29 @@ __all__ = ['image_namespace']
 
 image_namespace = Namespace('images', description='Images endpoint')
 
-put_arguments = reqparse.RequestParser()
-put_arguments.add_argument('url', type=str, help='URL of web page.')
+put_input = image_namespace.model(
+    'Image task PUT request', {
+        'url': fields.Url(description='URL of website', required=True),
+    })
 
-post_arguments = reqparse.RequestParser()
-post_arguments.add_argument('task_id', type=str, help='Task id.')
+task_output = image_namespace.model(
+    'Image task PUT response', {
+        'task_id':
+        fields.String(description='Task unique identifier.',
+                      example='440df-edf-4e'),
+        'task_status':
+        fields.String(description='Task status', example='SUBMITTED'),
+    })
 
-get_arguments = reqparse.RequestParser()
-get_arguments.add_argument('task_id', type=str, help='Task id.')
-get_arguments.add_argument('img_id', type=int, help='Image id.')
+post_input = image_namespace.model(
+    'Image task status request', {
+        'task_id':
+        fields.String(description='Task unique identifier', required=True),
+    })
+
+# get_arguments = reqparse.RequestParser()
+# get_arguments.add_argument('task_id', type=str, help='Task id.')
+# get_arguments.add_argument('img_id', type=int, help='Image id.')
 
 
 @image_namespace.errorhandler(ImageTask.DoesNotExist)
@@ -36,30 +50,36 @@ class ImageAPI(Resource):
         image = next((img for img in task.images if img.id == id), None)
         return image
 
-    @image_namespace.expect(put_arguments)
+    @image_namespace.expect(put_input)
+    @image_namespace.marshal_with(task_output)
     def put(self):
         '''
         Submit task to get images from page by url.
         '''
-        json_data = image_namespace.payload
+        json_data: dict = image_namespace.payload
         image = ImagePUTInput.load(json_data).data
         image.save()
         return ImagePUTOutput.dump(image)
 
-    @image_namespace.expect(post_arguments)
+    @image_namespace.expect(put_input)
+    @image_namespace.expect(task_output)
     def post(self):
         '''
         Get status of submitted task.
         '''
-        json_data = image_namespace.payload
+        json_data: dict = image_namespace.payload
         task_id = json_data['task_id']
-        image = ImageTask.objects.get(task_id=task_id)
+        image: ImageTask = ImageTask.objects.get(task_id=task_id)
         celery_task = AsyncResult(image.task_id)
         image.task_status = celery_task.state
         image.save()
         return ImagePOSTOutput.dump(image)
 
-    @image_namespace.expect(get_arguments)
+
+@image_namespace.route('/<image_id>')
+@image_namespace.param('image_id', 'Image unique identifier.')
+class ImageAPIDownload(Resource):
+    # @image_namespace.expect(get_arguments)
     @image_namespace.produces(['image/jpeg'])
     def get(self):
         '''
