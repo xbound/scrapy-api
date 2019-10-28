@@ -77,7 +77,7 @@ def on_get_text_task_end(task_id, task, *args, **kwargs):
             task_status = kwargs['state']
             image_results = [
                 models.Image(
-                    id=image_result.get('id'), img=image_result.get('img'))
+                    img=image_result.get('img'))
                 for image_result in kwargs['retval']
             ]
             image_task.task_status = task_status
