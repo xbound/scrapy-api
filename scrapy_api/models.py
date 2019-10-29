@@ -4,7 +4,7 @@ Database models. In this module all ORM related stuff are declared.
 from celery.result import AsyncResult
 from flask_mongoengine import Document
 from mongoengine import (BinaryField, EmbeddedDocument, EmbeddedDocumentField,
-                         IntField, ListField, StringField, signals)
+                         IntField, ListField, StringField, signals, errors)
 
 from scrapy_api.tasks import get_images, get_text
 
@@ -60,6 +60,13 @@ class Image(EmbeddedDocument):
     Image model class.
     '''
     img = BinaryField()
+
+    @classmethod
+    def get_image(cls, img_id):
+        image = cls.objects.get(id=img_id)
+        if not image:
+            raise errors.DoesNotExist()
+        return image
 
 
 class ImageTask(Task):

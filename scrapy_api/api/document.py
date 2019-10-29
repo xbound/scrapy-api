@@ -76,8 +76,8 @@ class DocumentAPI(Resource):
         Get status of submitted task using task_id.
         '''
         input_args: dict = document_namespace.payload
-        document: DocumentTask = DocumentTask.objects.get(
-            task_id=input_args['task_id'])
+        task_id = input_args['task_id']
+        document: DocumentTask = DocumentTask.objects.get(task_id=task_id)
         document.refresh_task_state()
         return document, 200
 

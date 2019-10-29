@@ -30,10 +30,6 @@ post_input = image_namespace.model(
         fields.String(description='Task unique identifier', required=True),
     })
 
-# get_arguments = reqparse.RequestParser()
-# get_arguments.add_argument('task_id', type=str, help='Task id.')
-# get_arguments.add_argument('img_id', type=int, help='Image id.')
-
 
 @image_namespace.errorhandler(ImageTask.DoesNotExist)
 def image_task_does_not_exist(error):
@@ -45,11 +41,6 @@ class ImageAPI(Resource):
     '''
     Images endpoint
     '''
-    def get_image(self, task_id, id):
-        task = ImageTask.objects(task_id=task_id, images__id=id).first()
-        image = next((img for img in task.images if img.id == id), None)
-        return image
-
     @image_namespace.expect(put_input)
     @image_namespace.marshal_with(task_output)
     def put(self):
@@ -70,18 +61,15 @@ class ImageAPI(Resource):
         json_data: dict = image_namespace.payload
         task_id = json_data['task_id']
         image: ImageTask = ImageTask.objects.get(task_id=task_id)
-        celery_task = AsyncResult(image.task_id)
-        image.task_status = celery_task.state
-        image.save()
-        return ImagePOSTOutput.dump(image)
+        image.refresh_task_state()
+        return image
 
 
-@image_namespace.route('/<image_id>')
+@image_namespace.route('/<string:image_id>')
 @image_namespace.param('image_id', 'Image unique identifier.')
 class ImageAPIDownload(Resource):
-    # @image_namespace.expect(get_arguments)
     @image_namespace.produces(['image/jpeg'])
-    def get(self):
+    def get(self, image_id):
         '''
         Get image from task result.
         '''
