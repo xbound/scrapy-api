@@ -7,4 +7,3 @@ from flask_restplus import Api
 
 celery = Celery()
 mongo = MongoEngine()
-api = Api()

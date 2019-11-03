@@ -1,16 +1,13 @@
 from celery import Celery
 from dynaconf import FlaskDynaconf
 from flask import Flask, Blueprint
-from flask_restplus import Api, Resource
 from werkzeug.debug import DebuggedApplication
 
 from scrapy_api import extensions
 from scrapy_api import errors
 from scrapy_api import manage
 
-from scrapy_api.api.ping import ping_namespace
-from scrapy_api.api.image import image_namespace
-from scrapy_api.api.document import document_namespace
+from scrapy_api.api.view import rest_api, api_blueprint
 
 
 def configure_app(app: Flask):
@@ -57,27 +54,11 @@ def register_blueprints(app: Flask):
     '''
     Register blueprints for app.
     '''
-    blueprint = Blueprint('api', __name__, url_prefix='/api')
+    rest_api.title = app.config.app_name
+    rest_api.version = app.config.app_version
+    rest_api.description = app.config.app_descr
 
-    extensions.api.init_app(blueprint)
-    extensions.api.title = app.config.app_name
-    extensions.api.version = app.config.app_version
-    extensions.api.description = app.config.app_descr
-    # Error handlers
-    @blueprint.app_errorhandler(404)
-    def path_not_found(error):
-        return errors.make_error_response(errors.Error404())
-
-    @extensions.api.errorhandler
-    def default_error_handler(error):
-        return errors.make_error_response(error)
-
-    # Adding namespaces
-    extensions.api.add_namespace(ping_namespace)
-    extensions.api.add_namespace(document_namespace)
-    extensions.api.add_namespace(image_namespace)
-
-    app.register_blueprint(blueprint)
+    app.register_blueprint(api_blueprint)
 
 def init_cli(app: Flask):
     '''

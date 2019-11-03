@@ -48,9 +48,9 @@ class ImageAPI(Resource):
         Submit task to get images from page by url.
         '''
         json_data: dict = image_namespace.payload
-        image = ImagePUTInput.load(json_data).data
+        image = ImageTask(**json_data)
         image.save()
-        return ImagePUTOutput.dump(image)
+        return image.to_json(), 201
 
     @image_namespace.expect(put_input)
     @image_namespace.expect(task_output)
@@ -62,7 +62,7 @@ class ImageAPI(Resource):
         task_id = json_data['task_id']
         image: ImageTask = ImageTask.objects.get(task_id=task_id)
         image.refresh_task_state()
-        return image
+        return image.to_json(), 200
 
 
 @image_namespace.route('/<string:image_id>')
@@ -73,13 +73,11 @@ class ImageAPIDownload(Resource):
         '''
         Get image from task result.
         '''
-        task_id = request.args.get('task_id')
-        img_id = int(request.args.get('img_id'))
-        image = self.get_image(task_id, img_id)
+        image = Image.get_image(image_id)
         if not image:
             abort(404)
         return send_file(io.BytesIO(image.img),
                          mimetype='image/jpeg',
                          as_attachment=True,
                          attachment_filename='{}-{}-{}.jpg'.format(
-                             'Image', task_id, id))
+                             'Image', image_id)), 200

@@ -60,7 +60,7 @@ def on_get_text_task_end(task_id, task, *args, **kwargs):
     :param args: positional parametres.
     :param kwargs: key-value parametres.
     '''
-    if task.name == 'scrapy_api.commons.tasks.get_text':
+    if task.name == 'scrapy_api.tasks.get_text':
         try:
             document_task = models.DocumentTask.objects.get(task_id=task_id)
             task_status = kwargs['state']
