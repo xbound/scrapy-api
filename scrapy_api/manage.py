@@ -6,7 +6,7 @@ $ flask <your command here>
 import json
 import click
 from flask.cli import FlaskGroup, with_appcontext
-from scrapy_api.extensions import api
+from scrapy_api.api.view import rest_api
 
 
 @click.command('postman')
@@ -17,5 +17,5 @@ def postman_api():
     '''
     urlvars = False  # Build query strings in URLs
     swagger = True  # Export Swagger specifications
-    data = api.as_postman(urlvars=urlvars, swagger=swagger)
+    data = rest_api.as_postman(urlvars=urlvars, swagger=swagger)
     print(json.dumps(data))

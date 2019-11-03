@@ -26,6 +26,14 @@ You can also only run local development server (only server without celery):
 ```shell
 $ pipenv run dev
 ```
+To run redis locally (on foreground):
+```shell
+$ docker-compose up -d redis
+```
+To run mongodb locally (on foreground):
+```shell
+$ docker-compose up -d mongodb
+```
 
 After laucnch API will be available at http://localhost:5000/api/.
 
